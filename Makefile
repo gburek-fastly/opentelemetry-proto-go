@@ -160,7 +160,7 @@ copy-otlp-protobuf-slim:
 gen-otlp-protobuf-lite: $(SOURCE_PROTOLITE_FILES)
 	rm -rf ./$(PROTOBUF_TEMP_DIR)
 	mkdir -p ./$(PROTOBUF_TEMP_DIR)
-	$(foreach file,$(SOURCE_PROTOLITE_FILES),$(call exec-command,$(PROTOC_LITE) $(PROTO_INCLUDES) --plugin protoc-gen-go-lite="/usr/bin/protoc-gen-go-lite" --go-lite_out=./$(PROTOBUF_TEMP_DIR) $(file)))
+	$(foreach file,$(SOURCE_PROTOLITE_FILES),$(call exec-command,$(PROTOC_LITE) $(PROTO_INCLUDES) --plugin protoc-gen-go-lite="/usr/bin/protoc-gen-go-lite" --go-lite_opt=features=json --go-lite_out=./$(PROTOBUF_TEMP_DIR) $(file)))
 
 .PHONY: copy-otlp-protobuf-lite
 copy-otlp-protobuf-lite:
