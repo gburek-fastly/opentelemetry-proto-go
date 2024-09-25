@@ -2386,13 +2386,10 @@ func (x *HistogramDataPoint) MarshalProtoJSON(s *json.MarshalState) {
 		s.WriteObjectField("count")
 		s.WriteUint64(x.Count)
 	}
-	if x.XSum != nil {
-		switch ov := x.XSum.(type) {
-		case *HistogramDataPoint_Sum:
-			s.WriteMoreIf(&wroteField)
-			s.WriteObjectField("sum")
-			s.WriteFloat64(ov.Sum)
-		}
+	if x.Sum != nil || s.HasField("sum") {
+		s.WriteMoreIf(&wroteField)
+		s.WriteObjectField("sum")
+		s.WriteFloat64(*x.Sum)
 	}
 	if len(x.BucketCounts) > 0 || s.HasField("bucketCounts") {
 		s.WriteMoreIf(&wroteField)
@@ -2420,21 +2417,15 @@ func (x *HistogramDataPoint) MarshalProtoJSON(s *json.MarshalState) {
 		s.WriteObjectField("flags")
 		s.WriteUint32(x.Flags)
 	}
-	if x.XMin != nil {
-		switch ov := x.XMin.(type) {
-		case *HistogramDataPoint_Min:
-			s.WriteMoreIf(&wroteField)
-			s.WriteObjectField("min")
-			s.WriteFloat64(ov.Min)
-		}
+	if x.Min != nil || s.HasField("min") {
+		s.WriteMoreIf(&wroteField)
+		s.WriteObjectField("min")
+		s.WriteFloat64(*x.Min)
 	}
-	if x.XMax != nil {
-		switch ov := x.XMax.(type) {
-		case *HistogramDataPoint_Max:
-			s.WriteMoreIf(&wroteField)
-			s.WriteObjectField("max")
-			s.WriteFloat64(ov.Max)
-		}
+	if x.Max != nil || s.HasField("max") {
+		s.WriteMoreIf(&wroteField)
+		s.WriteObjectField("max")
+		s.WriteFloat64(*x.Max)
 	}
 	s.WriteObjectEnd()
 }
@@ -2482,9 +2473,12 @@ func (x *HistogramDataPoint) UnmarshalProtoJSON(s *json.UnmarshalState) {
 			x.Count = s.ReadUint64()
 		case "sum":
 			s.AddField("sum")
-			ov := &HistogramDataPoint_Sum{}
-			x.XSum = ov
-			ov.Sum = s.ReadFloat64()
+			if s.ReadNil() {
+				x.Sum = nil
+				return
+			}
+			t := s.ReadFloat64()
+			x.Sum = &t
 		case "bucket_counts", "bucketCounts":
 			s.AddField("bucket_counts")
 			if s.ReadNil() {
@@ -2522,14 +2516,20 @@ func (x *HistogramDataPoint) UnmarshalProtoJSON(s *json.UnmarshalState) {
 			x.Flags = s.ReadUint32()
 		case "min":
 			s.AddField("min")
-			ov := &HistogramDataPoint_Min{}
-			x.XMin = ov
-			ov.Min = s.ReadFloat64()
+			if s.ReadNil() {
+				x.Min = nil
+				return
+			}
+			t := s.ReadFloat64()
+			x.Min = &t
 		case "max":
 			s.AddField("max")
-			ov := &HistogramDataPoint_Max{}
-			x.XMax = ov
-			ov.Max = s.ReadFloat64()
+			if s.ReadNil() {
+				x.Max = nil
+				return
+			}
+			t := s.ReadFloat64()
+			x.Max = &t
 		}
 	})
 }
@@ -2627,13 +2627,10 @@ func (x *ExponentialHistogramDataPoint) MarshalProtoJSON(s *json.MarshalState) {
 		s.WriteObjectField("count")
 		s.WriteUint64(x.Count)
 	}
-	if x.XSum != nil {
-		switch ov := x.XSum.(type) {
-		case *ExponentialHistogramDataPoint_Sum:
-			s.WriteMoreIf(&wroteField)
-			s.WriteObjectField("sum")
-			s.WriteFloat64(ov.Sum)
-		}
+	if x.Sum != nil || s.HasField("sum") {
+		s.WriteMoreIf(&wroteField)
+		s.WriteObjectField("sum")
+		s.WriteFloat64(*x.Sum)
 	}
 	if x.Scale != 0 || s.HasField("scale") {
 		s.WriteMoreIf(&wroteField)
@@ -2671,21 +2668,15 @@ func (x *ExponentialHistogramDataPoint) MarshalProtoJSON(s *json.MarshalState) {
 		}
 		s.WriteArrayEnd()
 	}
-	if x.XMin != nil {
-		switch ov := x.XMin.(type) {
-		case *ExponentialHistogramDataPoint_Min:
-			s.WriteMoreIf(&wroteField)
-			s.WriteObjectField("min")
-			s.WriteFloat64(ov.Min)
-		}
+	if x.Min != nil || s.HasField("min") {
+		s.WriteMoreIf(&wroteField)
+		s.WriteObjectField("min")
+		s.WriteFloat64(*x.Min)
 	}
-	if x.XMax != nil {
-		switch ov := x.XMax.(type) {
-		case *ExponentialHistogramDataPoint_Max:
-			s.WriteMoreIf(&wroteField)
-			s.WriteObjectField("max")
-			s.WriteFloat64(ov.Max)
-		}
+	if x.Max != nil || s.HasField("max") {
+		s.WriteMoreIf(&wroteField)
+		s.WriteObjectField("max")
+		s.WriteFloat64(*x.Max)
 	}
 	if x.ZeroThreshold != 0 || s.HasField("zeroThreshold") {
 		s.WriteMoreIf(&wroteField)
@@ -2738,9 +2729,12 @@ func (x *ExponentialHistogramDataPoint) UnmarshalProtoJSON(s *json.UnmarshalStat
 			x.Count = s.ReadUint64()
 		case "sum":
 			s.AddField("sum")
-			ov := &ExponentialHistogramDataPoint_Sum{}
-			x.XSum = ov
-			ov.Sum = s.ReadFloat64()
+			if s.ReadNil() {
+				x.Sum = nil
+				return
+			}
+			t := s.ReadFloat64()
+			x.Sum = &t
 		case "scale":
 			s.AddField("scale")
 			x.Scale = s.ReadInt32()
@@ -2784,14 +2778,20 @@ func (x *ExponentialHistogramDataPoint) UnmarshalProtoJSON(s *json.UnmarshalStat
 			})
 		case "min":
 			s.AddField("min")
-			ov := &ExponentialHistogramDataPoint_Min{}
-			x.XMin = ov
-			ov.Min = s.ReadFloat64()
+			if s.ReadNil() {
+				x.Min = nil
+				return
+			}
+			t := s.ReadFloat64()
+			x.Min = &t
 		case "max":
 			s.AddField("max")
-			ov := &ExponentialHistogramDataPoint_Max{}
-			x.XMax = ov
-			ov.Max = s.ReadFloat64()
+			if s.ReadNil() {
+				x.Max = nil
+				return
+			}
+			t := s.ReadFloat64()
+			x.Max = &t
 		case "zero_threshold", "zeroThreshold":
 			s.AddField("zero_threshold")
 			x.ZeroThreshold = s.ReadFloat64()
